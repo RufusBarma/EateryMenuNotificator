@@ -14,7 +14,7 @@ await scheduler.Start();
 await scheduler.ScheduleJob(menuJob, trigger);
 var cts = new CancellationTokenSource();
 var infinity = Task.Delay(Timeout.Infinite, cts.Token);
-
+await scheduler.TriggerJob(menuJob.Key);
 var sigintReceived = false;
 AppDomain.CurrentDomain.ProcessExit += (_, _) =>
 {

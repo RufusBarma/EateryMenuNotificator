@@ -10,7 +10,11 @@
 
     <ItemGroup>
       <PackageReference Include="GroupDocs.Conversion" Version="22.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0-preview.2.22152.2" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0-preview.2.22152.2" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0-preview.2.22152.2" />
       <PackageReference Include="Quartz" Version="3.4.0" />
+      <PackageReference Include="Telegram.Bot" Version="18.0.0-alpha.1" />
     </ItemGroup>
 
 </Project>

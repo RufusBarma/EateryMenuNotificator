@@ -1,11 +1,19 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
+using ChelindbankEatery.Notificators;
 using Quartz;
+using Telegram.Bot;
 
 namespace ChelindbankEatery;
 
 public class MenuJob: IJob
 {
+	private INotificator _notificator;
+	public MenuJob()
+	{
+		_notificator = new TelegramNotificator();
+	}
+
 	public async Task Execute(IJobExecutionContext context)
 	{
 		var tmpRootName = "tmp";
@@ -34,6 +42,8 @@ public class MenuJob: IJob
 		var cropRect = new Rectangle(0, waterMarkHeight, image.Width, image.Height-waterMarkHeight);
 		var resultPath = Path.ChangeExtension(file.Name, ".png");
 		image.Crop(cropRect).Save(Path.Combine(tmpRoot, resultPath), ImageFormat.Png);
+		Console.WriteLine("Notify");
+		await _notificator.Send(Path.Combine(tmpRoot, resultPath));
 		Console.WriteLine("Finally!");
 	}
 }
