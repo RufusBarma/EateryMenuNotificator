@@ -16,14 +16,26 @@ public class MenuJob: IJob
 
 	public async Task Execute(IJobExecutionContext context)
 	{
+		var fileSource = new DirectoryInfo("\\\\HQ-FS01\\HQ-Public\\tmp\\tmp").GetFiles().FirstOrDefault(file => file.Name.Contains("меню"));
+		if (fileSource == null)
+		{
+			Console.WriteLine("Меню не найдено(");
+			return;
+		}
 		var tmpRootName = "tmp";
 		var tmpRootDir = new DirectoryInfo(tmpRootName);
 		if (tmpRootDir.Exists)
+		{
+			if (tmpRootDir.GetFiles().Any(file => file.Name == fileSource?.Name))
+			{
+				Console.WriteLine("Меню актуально");
+				return;
+			}
 			tmpRootDir.Delete(true);
+		}
 		tmpRootDir.Create();
 
 		var tmpRoot = tmpRootDir.FullName;
-		var fileSource = new DirectoryInfo("N:\\tmp\\tmp").GetFiles().FirstOrDefault(file => file.Name.Contains("меню"));
 		var file = fileSource?.CopyTo(Path.Combine(tmpRoot, fileSource.Name));
 		if (file == null)
 		{
