@@ -5,7 +5,7 @@ using Quartz.Impl;
 var menuJob = JobBuilder.Create<MenuJob>().WithIdentity("MenuUpdate").Build();
 var trigger = TriggerBuilder.Create()
 	.WithIdentity("MenuUpdate")
-	.WithCronSchedule("0 */15 * * * ?")
+	.WithCronSchedule("0 */5 * * * ?")
 	.ForJob(menuJob)
 	.StartNow()
 	.Build();

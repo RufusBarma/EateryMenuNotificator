@@ -1,8 +1,10 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using ChelindbankEatery.Notificators;
+using GroupDocs.Conversion;
+using GroupDocs.Conversion.FileTypes;
+using GroupDocs.Conversion.Options.Convert;
 using Quartz;
-using Telegram.Bot;
 
 namespace ChelindbankEatery;
 
@@ -16,7 +18,7 @@ public class MenuJob: IJob
 
 	public async Task Execute(IJobExecutionContext context)
 	{
-		var fileSource = new DirectoryInfo("\\\\HQ-FS01\\HQ-Public\\tmp\\tmp").GetFiles().FirstOrDefault(file => file.Name.Contains("меню"));
+		var fileSource = new DirectoryInfo("N:\\tmp\\tmp").GetFiles().FirstOrDefault(file => file.Name.Contains("меню", StringComparison.OrdinalIgnoreCase));
 		if (fileSource == null)
 		{
 			Console.WriteLine("Меню не найдено(");
@@ -42,9 +44,13 @@ public class MenuJob: IJob
 			Console.WriteLine("Меню не найдено");
 			return;
 		}
-		var converter =  new GroupDocs.Conversion.Converter(Path.Combine(tmpRoot,file.FullName));
+		var converter =  new Converter(Path.Combine(tmpRoot,file.FullName));
 		// set the convert options for PNG format
-		var convertOptions = converter.GetPossibleConversions()["png"].ConvertOptions;
+		var convertOptions = new ImageConvertOptions
+		{
+			Format = ImageFileType.Png,
+			PagesCount = 1
+		};
 		// convert to PNG format
 		var tmpPath = Path.ChangeExtension(Path.Combine(tmpRoot, file.Name), ".tmp");
 		converter.Convert(tmpPath, convertOptions);
