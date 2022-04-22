@@ -18,7 +18,7 @@ public class MenuJob: IJob
 
 	public async Task Execute(IJobExecutionContext context)
 	{
-		var fileSource = new DirectoryInfo("N:\\tmp\\tmp").GetFiles().FirstOrDefault(file => file.Name.Contains("меню", StringComparison.OrdinalIgnoreCase));
+		var fileSource = new DirectoryInfo("N:\\tmp\\tmp").GetFiles().FirstOrDefault(file => file.Name.Contains("меню", StringComparison.OrdinalIgnoreCase) && !file.Name.Contains("lock"));
 		if (fileSource == null)
 		{
 			Console.WriteLine("Меню не найдено(");
