@@ -19,10 +19,9 @@ public class TelegramNotificator : INotificator
 		_botClient = new TelegramBotClient(token);
 	}
 
-	public async Task Send(string imgPath)
+	public async Task Send(Stream imgStream, string fileName)
 	{
-		await using var stream = System.IO.File.OpenRead(imgPath);
-		var inputOnlineFile = new InputOnlineFile(stream, Path.GetFileName(imgPath));
+		var inputOnlineFile = new InputOnlineFile(imgStream, Path.GetFileName(fileName));
 		await _botClient.SendPhotoAsync(new ChatId(_channel), inputOnlineFile);
 	}
 }

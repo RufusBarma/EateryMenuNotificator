@@ -9,11 +9,21 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Aspose.Imaging" Version="22.5.0" />
+      <PackageReference Include="Aspose.TeX" Version="22.4.0" />
+      <PackageReference Include="Aspose.Words" Version="22.5.0" />
       <PackageReference Include="GroupDocs.Conversion" Version="22.2.0" />
+      <PackageReference Include="GroupDocs.Editor" Version="21.10.0" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0-preview.2.22152.2" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0-preview.2.22152.2" />
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0-preview.2.22152.2" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0-preview.4.22229.4" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0-preview.4.22229.4" />
       <PackageReference Include="Quartz" Version="3.4.0" />
+      <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.4.0" />
+      <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0" />
       <PackageReference Include="Telegram.Bot" Version="18.0.0-alpha.1" />
     </ItemGroup>
 

@@ -1,6 +1,41 @@
 ﻿using ChelindbankEatery;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.Impl;
+
+var configurationRoot = new ConfigurationBuilder()
+	.AddEnvironmentVariables()
+	.AddJsonFile("appsettings.json")
+	.Build();
+
+var serviceProvider = new ServiceCollection()
+	.AddSingleton<IConfiguration>(configurationRoot)
+	.AddTransient<MenuJob>()
+	.AddTransient<MenuJobLatex>()
+	.AddQuartz(q =>
+		{
+			// handy when part of cluster or you want to otherwise identify multiple schedulers
+			q.SchedulerId = "Scheduler-Core";
+			// we take this from appsettings.json, just show it's possible
+			q.SchedulerName = "Quartz ASP.NET Core Sample Scheduler";
+
+			q.UseMicrosoftDependencyInjectionJobFactory();
+
+			// these are the defaults
+			q.UseSimpleTypeLoader();
+			q.UseInMemoryStore();
+			q.UseDefaultThreadPool(tp => { tp.MaxConcurrency = 10; });
+
+			q.ScheduleJob<MenuJob>(trigger => trigger
+				.WithIdentity("MenuUpdate")
+				.StartNow()
+				.WithCronSchedule("0 */5 * * * ?")
+				.WithDescription("my awesome trigger configured for a job with single call")
+			);
+		})
+	.AddQuartzHostedService(q => q.WaitForJobsToComplete = true)
+	.BuildServiceProvider();
 
 var menuJob = JobBuilder.Create<MenuJob>().WithIdentity("MenuUpdate").Build();
 var trigger = TriggerBuilder.Create()
