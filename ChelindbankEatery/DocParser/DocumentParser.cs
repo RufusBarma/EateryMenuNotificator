@@ -44,6 +44,7 @@ public class DocumentParser: IDocumentParser
 			.Descendants("tr")
 			.Select(row => row.Descendants("td").Select(cell => cell.InnerText == "&#xa0;"? "": cell.InnerText).Take(3))
 			.Select(row => row.ToArray())
+			.SkipLast(3)
 			.ToArray();
 
 		return table;

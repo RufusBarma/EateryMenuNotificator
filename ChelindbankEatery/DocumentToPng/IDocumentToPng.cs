@@ -4,5 +4,5 @@ namespace ChelindbankEatery.DocumentToPng;
 
 public interface IDocumentToPng
 {
-	public Stream GetPng(DocumentInfo documentInfo);
+	public Task<Stream> GetPngAsync(DocumentInfo documentInfo);
 }

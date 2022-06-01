@@ -26,7 +26,7 @@ public class MenuJobLatex: IJob
 	{
 		var documentPath = new DirectoryInfo("tmp").GetFiles().FirstOrDefault(file => file.Name.Contains("docx")).FullName; //remove late
 		var documentInfo = _documentParser.GetInfo(documentPath);
-		var pngStream = _documentToPng.GetPng(documentInfo);
+		var pngStream = await _documentToPng.GetPngAsync(documentInfo);
 		await _notificator.Send(pngStream, documentPath);
 	}
 }
