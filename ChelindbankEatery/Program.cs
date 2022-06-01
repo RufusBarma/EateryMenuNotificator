@@ -1,6 +1,10 @@
 ﻿using ChelindbankEatery;
+using ChelindbankEatery.DocParser;
+using ChelindbankEatery.DocumentToPng;
+using ChelindbankEatery.Notificators;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Impl;
 
@@ -12,7 +16,11 @@ var configurationRoot = new ConfigurationBuilder()
 var serviceProvider = new ServiceCollection()
 	.AddSingleton<IConfiguration>(configurationRoot)
 	.AddTransient<MenuJob>()
-	.AddTransient<MenuJobLatex>()
+	.AddTransient<IDocumentParser, DocumentParser>()
+	.AddTransient<INotificator, TelegramNotificator>()
+	.AddTransient<IDocumentToPng, DocumentToHtmlPng>()
+	.AddTransient<MenuJobHtml>()
+	.AddLogging(configure => configure.AddConsole())
 	.AddQuartz(q =>
 		{
 			// handy when part of cluster or you want to otherwise identify multiple schedulers
@@ -27,7 +35,7 @@ var serviceProvider = new ServiceCollection()
 			q.UseInMemoryStore();
 			q.UseDefaultThreadPool(tp => { tp.MaxConcurrency = 10; });
 
-			q.ScheduleJob<MenuJob>(trigger => trigger
+			q.ScheduleJob<MenuJobHtml>(trigger => trigger
 				.WithIdentity("MenuUpdate")
 				.StartNow()
 				.WithCronSchedule("0 */5 * * * ?")
@@ -36,6 +44,10 @@ var serviceProvider = new ServiceCollection()
 		})
 	.AddQuartzHostedService(q => q.WaitForJobsToComplete = true)
 	.BuildServiceProvider();
+
+var schedulerQuartz = await serviceProvider.GetRequiredService<ISchedulerFactory>().GetScheduler();
+schedulerQuartz.Start();
+await Task.Delay(Timeout.Infinite);
 
 var menuJob = JobBuilder.Create<MenuJob>().WithIdentity("MenuUpdate").Build();
 var trigger = TriggerBuilder.Create()

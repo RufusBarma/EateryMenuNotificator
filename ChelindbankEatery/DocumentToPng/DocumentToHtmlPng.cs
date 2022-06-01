@@ -4,13 +4,13 @@ using PuppeteerSharp;
 
 namespace ChelindbankEatery.DocumentToPng;
 
-public class DocumentToLatexPng: IDocumentToPng
+public class DocumentToHtmlPng: IDocumentToPng
 {
 	public async Task<Stream> GetPngAsync(DocumentInfo documentInfo)
 	{
 		var html = new StringBuilder();
 		html.Append(@"<body>");
-		var tableOpen = @"<table style=""width:90%; margin-bottom:50px"">";
+		var tableOpen = @"<table style=""width:100%; margin-bottom:50px"">";
 		html.Append(tableOpen);
 		foreach (var menuTable in documentInfo.MenuTable)
 		{
@@ -18,7 +18,7 @@ public class DocumentToLatexPng: IDocumentToPng
 			if (row.Length == 1)
 			{
 				html.Append(@"</table>");
-				html.Append($"<h3>{row.First()}</h3>");
+				html.Append($"<h3 style=\"font-weight: bold;\">{row.First()}</h3>");
 				html.Append(tableOpen);
 				continue;
 			}
