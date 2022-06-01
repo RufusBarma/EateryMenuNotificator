@@ -9,6 +9,15 @@ public class DocumentToHtmlPng: IDocumentToPng
 	public async Task<Stream> GetPngAsync(DocumentInfo documentInfo)
 	{
 		var html = new StringBuilder();
+		html.Append(@"  
+		<style>
+			body{
+				background-color: white;
+			} 
+			h3 {
+				color: #01627F;
+			}
+		</style>");
 		html.Append(@"<body>");
 		var tableOpen = @"<table style=""width:100%; margin-bottom:50px"">";
 		html.Append(tableOpen);
