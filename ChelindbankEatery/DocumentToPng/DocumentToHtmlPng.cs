@@ -11,15 +11,18 @@ public class DocumentToHtmlPng: IDocumentToPng
 		var html = new StringBuilder();
 		html.Append(@"  
 		<style>
-			body{
-				background-color: white;
-			} 
 			h3 {
 				color: #01627F;
+				margin-bottom:5px;
+			}
+			table {
+				width:100%;
+				margin-bottom:20px;
+                margin-left:10px;
 			}
 		</style>");
 		html.Append(@"<body>");
-		var tableOpen = @"<table style=""width:100%; margin-bottom:50px"">";
+		var tableOpen = @"<table>";
 		html.Append(tableOpen);
 		foreach (var menuTable in documentInfo.MenuTable)
 		{
@@ -32,8 +35,9 @@ public class DocumentToHtmlPng: IDocumentToPng
 				continue;
 			}
 			html.Append("<tr>");
-			html.AppendJoin('\n', menuTable.Take(1).Select(cell => @"<th style=""width:80%; text-align:left"">" + cell + "</th>"));
-			html.AppendJoin('\n', menuTable.Skip(1).Select(cell => @"<th style=""width:10%; text-align:left"">" + cell + "</th>"));
+			html.Append(@"<th style=""width:80%; text-align:left"">" + menuTable[0] + "</th>");
+			html.Append(@"<th style=""width:13%; text-align:left"">" + menuTable[1] + "</th>");
+			html.Append(@"<th style=""width:7%; text-align:left"">" + menuTable[2] + "</th>");
 			html.Append("</tr>");
 		}
 		html.Append(@"</table>");
