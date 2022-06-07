@@ -1,12 +1,9 @@
 ﻿using ChelindbankEatery;
-using ChelindbankEatery.DocParser;
-using ChelindbankEatery.DocumentToPng;
 using ChelindbankEatery.Notificators;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Quartz;
-using Quartz.Impl;
 
 var configurationRoot = new ConfigurationBuilder()
 	.AddEnvironmentVariables()
@@ -15,11 +12,7 @@ var configurationRoot = new ConfigurationBuilder()
 
 var serviceProvider = new ServiceCollection()
 	.AddSingleton<IConfiguration>(configurationRoot)
-	.AddTransient<MenuJob>()
-	.AddTransient<IDocumentParser, DocumentParser>()
 	.AddTransient<INotificator, TelegramNotificator>()
-	.AddTransient<IDocumentToPng, DocumentToHtmlPng>()
-	.AddTransient<MenuJobHtml>()
 	.AddLogging(configure => configure.AddConsole())
 	.AddQuartz(q =>
 		{
@@ -35,33 +28,20 @@ var serviceProvider = new ServiceCollection()
 			q.UseInMemoryStore();
 			q.UseDefaultThreadPool(tp => { tp.MaxConcurrency = 10; });
 
-			q.ScheduleJob<MenuJobHtml>(trigger => trigger
+			q.ScheduleJob<MenuJobFromWeb>(trigger => trigger
 				.WithIdentity("MenuUpdate")
 				.StartNow()
-				.WithCronSchedule("0 */5 * * * ?")
+				.WithCronSchedule("0 */2 * * * ?")
 				.WithDescription("my awesome trigger configured for a job with single call")
 			);
 		})
 	.AddQuartzHostedService(q => q.WaitForJobsToComplete = true)
 	.BuildServiceProvider();
 
-var schedulerQuartz = await serviceProvider.GetRequiredService<ISchedulerFactory>().GetScheduler();
-schedulerQuartz.Start();
-await Task.Delay(Timeout.Infinite);
-
-var menuJob = JobBuilder.Create<MenuJob>().WithIdentity("MenuUpdate").Build();
-var trigger = TriggerBuilder.Create()
-	.WithIdentity("MenuUpdate")
-	.WithCronSchedule("0 */5 * * * ?")
-	.ForJob(menuJob)
-	.StartNow()
-	.Build();
-var scheduler = await StdSchedulerFactory.GetDefaultScheduler();
-await scheduler.Start();
-await scheduler.ScheduleJob(menuJob, trigger);
+var scheduler = await serviceProvider.GetRequiredService<ISchedulerFactory>().GetScheduler();
+scheduler.Start();
 var cts = new CancellationTokenSource();
 var infinity = Task.Delay(Timeout.Infinite, cts.Token);
-await scheduler.TriggerJob(menuJob.Key);
 var sigintReceived = false;
 AppDomain.CurrentDomain.ProcessExit += (_, _) =>
 {

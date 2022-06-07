@@ -1,0 +1,45 @@
+﻿@model ChelindbankEatery.DocParser.DocumentInfoModel;
+@{
+    ViewData["Title"] = "Home Page";
+    var documentInfoModel = Model;
+    var icons = new Dictionary<string, string>
+    {
+        { "Холодные блюда", "Images/ColdDishes.png" },
+        { "Первые блюда", "Images/Soup.png" },
+        { "Вторые блюда", "Images/SecondDishes.png" },
+        { "Гарнир", "Images/Garnish.png" },
+        { "Соусы", "Images/Sauces.png" },
+        { "Напитки", "Images/Beverages.png" },
+        { "Выпечка", "Images/Bake.png" },
+    };
+}
+
+<body>
+<h1 style="text-align: center">Меню</h1>
+<h2 style="text-align: center">@Model.Date</h2>
+
+@Html.Raw("<table>")
+@foreach (var menuTable in documentInfoModel.MenuTable)
+{
+    var row = menuTable.Where(cell => !string.IsNullOrEmpty(cell)).ToArray();
+    @if (row.Length == 1)
+    {
+        @Html.Raw("</table>")
+        <h3>
+            @if (icons.ContainsKey(row.First()))
+            {
+                <img class="h-icon" src="@icons[row.First()]">
+            }
+            @row.First()
+        </h3>
+        @Html.Raw("<table>")
+        continue;
+    }
+    <tr>
+        <th style="width: 75%; text-align:left"> @menuTable[0] </th>
+        <th style="width: 15%; text-align:left"> @menuTable[1] </th>
+        <th style="width: 10%; text-align:left"> @menuTable[2] </th>
+    </tr>
+}
+@Html.Raw("</table>")
+</body>

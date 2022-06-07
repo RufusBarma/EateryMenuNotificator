@@ -1,0 +1,52 @@
+html {
+  font-size: 18px;
+}
+
+/*@media (min-width: 768px) {*/
+/*  html {*/
+/*    font-size: 16px;*/
+/*  }*/
+/*}*/
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+/*body {*/
+/*  margin-bottom: 60px;*/
+/*}*/
+
+h1 {
+    color: #005e9e;    
+}
+
+h2 {
+    color: #005e9e;
+}
+
+h3 {
+   color: #005e9e;
+   margin-bottom:3px;
+   font-weight: bold;
+   display: flex;
+   justify-content: left;
+   align-items: center;
+   text-align: center;
+}
+
+.h-icon{
+    margin-right: 5px;
+}
+
+table {
+  width:100%;
+  margin-bottom:20px;
+  padding-left:32px;
+  border-spacing: 8px;
+  border-collapse: separate;
+}
+
+th {
+    font-weight: normal;
+}
