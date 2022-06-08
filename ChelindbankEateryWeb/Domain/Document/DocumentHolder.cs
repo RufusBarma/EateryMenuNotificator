@@ -26,7 +26,7 @@ public class DocumentHolder
 		var documentPath = await _downloader.GetDocument();
 		if (string.IsNullOrEmpty(documentPath))
 		{
-			if (_previous == null)
+			if (_previous == null && Directory.Exists("tmp"))
 				documentPath = new DirectoryInfo("tmp").GetFiles().FirstOrDefault(file => file.Name.Contains("docx"))?.FullName;
 			else
 				return;

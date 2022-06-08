@@ -21,6 +21,7 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0-preview.4.22229.4" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0-preview.4.22229.4" />
       <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
       <PackageReference Include="PuppeteerSharp" Version="7.0.0" />
       <PackageReference Include="Quartz" Version="3.4.0" />
       <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.4.0" />

@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<DocumentHolder>();
 builder.Services
+	.AddLogging(loggingBuilder => loggingBuilder.AddSimpleConsole())
 	.AddTransient<IDocumentDownloader, DocumentDownloader>()
 	.AddTransient<IDocumentParser, DocumentParser>()
 	.AddQuartz(q =>

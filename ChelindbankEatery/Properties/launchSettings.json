@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ChelindbankEatery": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
