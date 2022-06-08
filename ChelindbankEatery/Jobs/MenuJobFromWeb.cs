@@ -19,7 +19,7 @@ public class MenuJobFromWeb: IJob
 
 	public async Task Execute(IJobExecutionContext context)
 	{
-		var latestDate = await new HttpClient().GetAsync("https://localhost:7006/Home/LatestUpdateDate");
+		var latestDate = await new HttpClient().GetAsync("localhost:7006/Home/LatestUpdateDate");
 		if (!latestDate.IsSuccessStatusCode)
 		{
 			_logger.LogWarning("Не могу подключиться к представлению");
@@ -39,7 +39,7 @@ public class MenuJobFromWeb: IJob
 		await browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
 		var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
 		var page = await browser.NewPageAsync();
-		await page.GoToAsync("https://localhost:7006/");
+		await page.GoToAsync("localhost:7006/");
 		var ms = new MemoryStream();
 		if (!Directory.Exists("tmp"))
 			Directory.CreateDirectory("tmp");
