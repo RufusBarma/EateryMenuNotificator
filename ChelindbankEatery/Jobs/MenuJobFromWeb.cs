@@ -1,5 +1,7 @@
-﻿using System.Globalization;
+﻿using System.Configuration;
+using System.Globalization;
 using ChelindbankEatery.Notificators;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PuppeteerSharp;
 using Quartz;
@@ -10,16 +12,21 @@ public class MenuJobFromWeb: IJob
 {
 	private readonly INotificator _notificator;
 	private readonly ILogger _logger;
+	private readonly string webPartUrl;
 
-	public MenuJobFromWeb(INotificator notificator, ILogger<MenuJobFromWeb> logger)
+	public MenuJobFromWeb(INotificator notificator, ILogger<MenuJobFromWeb> logger, IConfiguration configuration)
 	{
 		_notificator = notificator;
 		_logger = logger;
+		webPartUrl = configuration["WebPartUrl"];
+
+		if (string.IsNullOrEmpty(webPartUrl))
+			throw new ConfigurationException("WebPartUrl is not defined in configuration or environment");
 	}
 
 	public async Task Execute(IJobExecutionContext context)
 	{
-		var latestDate = await new HttpClient().GetAsync("localhost:7006/Home/LatestUpdateDate");
+		var latestDate = await new HttpClient().GetAsync($"{webPartUrl}/Home/LatestUpdateDate");
 		if (!latestDate.IsSuccessStatusCode)
 		{
 			_logger.LogWarning("Не могу подключиться к представлению");
@@ -39,7 +46,7 @@ public class MenuJobFromWeb: IJob
 		await browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
 		var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
 		var page = await browser.NewPageAsync();
-		await page.GoToAsync("localhost:7006/");
+		await page.GoToAsync(webPartUrl);
 		var ms = new MemoryStream();
 		if (!Directory.Exists("tmp"))
 			Directory.CreateDirectory("tmp");
