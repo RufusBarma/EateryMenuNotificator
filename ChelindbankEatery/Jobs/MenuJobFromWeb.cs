@@ -46,6 +46,7 @@ public class MenuJobFromWeb: IJob
 		await browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
 		var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
 		var page = await browser.NewPageAsync();
+		await page.SetViewportAsync(new ViewPortOptions { Width = 1100 });
 		await page.GoToAsync(webPartUrl);
 		var ms = new MemoryStream();
 		if (!Directory.Exists("tmp"))
