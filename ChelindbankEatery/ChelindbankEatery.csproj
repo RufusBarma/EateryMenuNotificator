@@ -11,8 +11,6 @@
     <ItemGroup>
       <PackageReference Include="Aspose.Imaging" Version="22.5.0" />
       <PackageReference Include="Aspose.Words" Version="22.5.0" />
-      <PackageReference Include="GroupDocs.Conversion" Version="22.2.0" />
-      <PackageReference Include="GroupDocs.Editor" Version="21.10.0" />
       <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0-preview.2.22152.2" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0-preview.2.22152.2" />

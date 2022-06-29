@@ -31,7 +31,7 @@ var serviceProvider = new ServiceCollection()
 			q.ScheduleJob<MenuJobFromWeb>(trigger => trigger
 				.WithIdentity("MenuUpdate")
 				.StartNow()
-				.WithCronSchedule("0 */2 * * * ?")
+				.WithCronSchedule("0 */1 * * * ?")
 				.WithDescription("my awesome trigger configured for a job with single call")
 			);
 		})
